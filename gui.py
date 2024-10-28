@@ -2,7 +2,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 
-from Algorithms.SolverFactory import SolverFactory
+from SolverFactory import SolverFactory as factory
 
 states = ["123405678", "123450678", "123456078", "123456708", "123456780"]
 
@@ -149,7 +149,7 @@ class SolveButton(QWidget):
         if self.validator.validate_input():
             self.initialState = self.validator.line_edit.text()
             self.alg = self.alg_selection.on_change_selection()
-            solver = SolverFactory(self.initialState).get_method(self.alg)
+            solver = factory(self.initialState).get_method(self.alg)
             solver.solve()
             # self.states = states
 

@@ -1,11 +1,10 @@
 import time
 from collections import deque
-from Solver import Solver
+from Algorithms.Solver import Solver
 
 class BFS(Solver):
     def __init__(self, initial_state, parent=None, move=None, depth=0):
         super().__init__(initial_state)
-        self.initial_state = initial_state
         self.parent = parent
         self.move = move
         self.depth = depth
@@ -13,7 +12,6 @@ class BFS(Solver):
 
     def solve(self):
         """Perform BFS to find the solution path and calculate metrics."""
-        print("Solving using BFS...")
         start_time = time.time()
         queue = deque([BFS(int(self.initial_state))])
         visited = {int(self.initial_state)}

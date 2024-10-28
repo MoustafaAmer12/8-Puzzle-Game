@@ -1,4 +1,7 @@
-import DFS, BFS, IDS, AStar, ManhattanDistance, EuclideanDistance
+from Algorithms.DFS import DFS
+from Algorithms.BFS import BFS
+from Algorithms.IDS import IDS
+from Algorithms.AStar import AStar, ManhattanDistance, EuclideanDistance
 
 class SolverFactory:
     def __init__(self, initialState):
@@ -12,6 +15,6 @@ class SolverFactory:
         elif method == "Iterative DFS":
             return IDS(self.initialState)
         elif method == "A* (Manhattan)":
-            return AStar(self.initialState, ManhattanDistance)
+            return AStar(self.initialState, heuristic=ManhattanDistance())
         elif method == "A* (Euclidean)":
-            return AStar(self.initialState, EuclideanDistance)
+            return AStar(self.initialState, heuristic=EuclideanDistance())

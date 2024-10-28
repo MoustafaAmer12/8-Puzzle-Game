@@ -1,7 +1,7 @@
 import time
 
 from Algorithms.Solver import Solver
-class DFS (Solver):
+class DFS(Solver):
     # initializing parameters of DFS
     def __init__(self, initial_state: str):
         super().__init__(initial_state)
@@ -61,10 +61,10 @@ class DFS (Solver):
 
 
 
+if __name__ == "__main__":
+    def run_solver(solver: Solver):
+        result = solver.solve()
+        print(result)
 
-def run_solver(solver: Solver):
-    result = solver.solve()
-    print(result)
-
-dfs_solver = DFS("718654230")
-run_solver(dfs_solver)  # Example initial state
+    dfs_solver = DFS("718654230")
+    run_solver(dfs_solver)  # Example initial state

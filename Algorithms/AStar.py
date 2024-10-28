@@ -1,7 +1,7 @@
 import time
 from math import sqrt
 from queue import heappop, heappush
-from Solver import Solver
+from Algorithms.Solver import Solver
 
 class Heuristic:
     def calculate(self, state):
@@ -40,7 +40,6 @@ class EuclideanDistance(Heuristic):
 class AStar(Solver):
     def __init__(self, initial_state, heuristic: Heuristic, parent=None, move=None, depth=0, cost=0):
         super().__init__(initial_state)
-        self.initial_state = initial_state
         self.parent = parent
         self.move = move
         self.depth = depth
