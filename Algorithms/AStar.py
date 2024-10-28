@@ -1,7 +1,7 @@
 import time
 from math import sqrt
 from queue import heappop, heappush
-from Solver import Solver
+from Algorithms.Solver import Solver
 
 class Heuristic:
     def calculate(self, state):
@@ -79,8 +79,8 @@ class AStar(Solver):
                 end_time = time.time()
                 solution_path = current_node.get_path()
                 traced_path = current_node.trace_path()
-                return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
-                # return traced_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+                # return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+                return self.map(traced_path), len(solution_path), num_expanded, max_depth, round(end_time - start_time, 4)
 
             
             for move, initial_state in current_node.get_neighbors():

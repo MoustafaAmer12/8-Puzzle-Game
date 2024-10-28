@@ -1,5 +1,4 @@
 class Solver:
-    
     GOAL_STATE = 12345678
 
     def __init__(self, initial_state :str):
@@ -63,8 +62,16 @@ class Solver:
 
         return children
 
-    def map(self):
-        pass
+    def map(self, states):
+        new_states = []
+        for state in states:
+            if type(state) is int:
+                new_state = str(state)
+                if len(new_state) != 9:
+                    new_state = '0' + new_state
+                new_states.append(new_state)
+        return new_states
+                
 
     # To Be Overridden
     def solve(self):
@@ -107,7 +114,7 @@ class Solver:
         path = []
         node = self 
         while node is not None:
-            path.append(node)
+            path.append(node.initial_state)
             node = node.parent
         return path[::-1] 
 

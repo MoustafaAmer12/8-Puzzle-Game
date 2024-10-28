@@ -1,5 +1,5 @@
 import time
-from Solver import Solver
+from Algorithms.Solver import Solver
 class IDS(Solver):
     def __init__(self, initial_state: str):
         super().__init__(initial_state)
@@ -33,8 +33,8 @@ class IDS(Solver):
                     current = parent[current]
                 ans.append(current)
                 ans.reverse()
-                self.endTime=round(time.time()*1000)
-                return ans,len(ans)-1,self.expandedNodes,Max,self.endTime-self.startTime
+                self.endTime=time.time()
+                return self.map(ans),len(ans)-1,self.expandedNodes,Max,round(self.endTime-self.startTime, 4)
 
             if (DepthMap[current] >= Max):
                 continue
@@ -61,7 +61,7 @@ class IDS(Solver):
 
 
     def solve(self):
-        self.startTime=round(time.time()*1000)
+        self.startTime=time.time()
         x=0
         while(x<100):
 

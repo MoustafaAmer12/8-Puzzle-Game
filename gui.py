@@ -148,8 +148,9 @@ class SolveButton(QWidget):
             self.initialState = self.validator.line_edit.text()
             self.alg = self.alg_selection.on_change_selection()
             solver = factory(self.initialState).get_method(self.alg)
-            states, length, expanded, max_depth, el_time = solver.solve()
-            print(states[0], length, expanded, max_depth, el_time)
+            self.states, self.length, self.expanded, self.max_depth, self.el_time = solver.solve()
+
+            print(self.states, self.length, self.expanded, self.max_depth, self.el_time)
 
 # Side Layout
 class SideLayout(QVBoxLayout):
@@ -271,6 +272,7 @@ class GameGrid(QGraphicsView):
 
     def update_state(self, index1, index2):
         # Swap the values in the state
+        print(self.state)
         self.state = list(self.state)
         self.state[index1], self.state[index2] = self.state[index2], self.state[index1]
         self.state = ''.join(self.state)

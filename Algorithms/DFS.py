@@ -1,6 +1,6 @@
 import time
 
-from Solver import Solver
+from Algorithms.Solver import Solver
 class DFS(Solver):
     # initializing parameters of DFS
     def __init__(self, initial_state: str):
@@ -12,8 +12,7 @@ class DFS(Solver):
 
     def solve(self):
 
-        startTime=round(time.time()*1000)
-
+        startTime=time.time()
         frontier=[]
         explored=set()
         frontier.append(int(self.initial_state))
@@ -37,8 +36,8 @@ class DFS(Solver):
                     current=self.parent[current]
                 ans.append(current)    #append start state
                 ans.reverse()          # reverse path to get it in right order
-                endTime=round(time.time()*1000)
-                return ans, len(ans)-1, self.expandedNodes, self.maxDepth, endTime-startTime   # returning data
+                endTime=time.time()
+                return self.map(ans), len(ans)-1, self.expandedNodes, self.maxDepth, round(endTime-startTime, 4)   # returning data
 
 
 
