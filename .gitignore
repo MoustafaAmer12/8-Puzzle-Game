@@ -5,6 +5,7 @@ __pycache__/
 *.pyd
 *.pyc
 
+.idea/
 # Distribution / packaging
 .Python
 build/
