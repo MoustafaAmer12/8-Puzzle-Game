@@ -250,12 +250,12 @@ class GameGrid(QGraphicsView):
 
         # Create animations for both widgets
         anim1 = QPropertyAnimation(item1, b"pos")
-        anim1.setDuration(500)
+        anim1.setDuration(400)
         anim1.setStartValue(item1.pos())
         anim1.setEndValue(item2.pos())
 
         anim2 = QPropertyAnimation(item2, b"pos")
-        anim2.setDuration(500)
+        anim2.setDuration(400)
         anim2.setStartValue(item2.pos())
         anim2.setEndValue(item1.pos())
 
@@ -304,7 +304,7 @@ class GameLayout(QVBoxLayout):
     
     def playTransitions(self, states):
         for i, state in enumerate(states):
-            QTimer.singleShot(i * 1000, lambda st=state: self.game_grid.updateState(st))
+            QTimer.singleShot(i * 1200, lambda st=state: self.game_grid.updateState(st))
 
 # App Layout
 class AppLayout(QHBoxLayout):
@@ -335,7 +335,7 @@ class AppLayout(QHBoxLayout):
         self.initialState = self.side_layout.initalState
         # self.alg = self.side_layout.alg
         self.game_layout.game_grid.refreshGrid(self.initialState),
-        QTimer.singleShot(2000, lambda: 
+        QTimer.singleShot(1500, lambda: 
             self.game_layout.playTransitions(self.side_layout.states)
         )
 
