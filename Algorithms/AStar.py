@@ -79,7 +79,9 @@ class AStar(Solver):
                 end_time = time.time()
                 solution_path = current_node.get_path()
                 traced_path = current_node.trace_path()
-                return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+                # return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+                return traced_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+
             
             for move, initial_state in current_node.get_neighbors():
                 new_depth = current_node.depth + 1
@@ -92,25 +94,26 @@ class AStar(Solver):
     
 
 # # Example usage:
-# initial_state = "123804765"  # Initial state as a string
-# # Choose heuristic
-# heuristic_strategy = ManhattanDistance()  # Use ManhattanDistance or EuclideanDistance()
+if __name__ == "__main__":
+    initial_state = "123804765"  # Initial state as a string
+    # Choose heuristic
+    heuristic_strategy = ManhattanDistance()  # Use ManhattanDistance or EuclideanDistance()
 
-# # heuristic_strategy = EuclideanDistance()
-# goal_state = "281043765"
-# solver = AStar(initial_state, heuristic=heuristic_strategy)
-# solver.set_goal_state(int(goal_state))
-# result = solver.solve()
+    # heuristic_strategy = EuclideanDistance()
+    goal_state = "281043765"
+    solver = AStar(initial_state, heuristic=heuristic_strategy)
+    solver.set_goal_state(int(goal_state))
+    result = solver.solve()
 
-# if result:
-#     traced_path, solution_path, path_length, num_expanded, max_depth, time_taken = result
+    if result:
+        traced_path, solution_path, path_length, num_expanded, max_depth, time_taken = result
 
-#     print("Result Metrics:")
-#     print("Traced Path:", [node.initial_state for node in traced_path])
-#     print("Solution Path:", solution_path)
-#     print("Number of Steps:", path_length)
-#     print("Number of Expanded Nodes:", num_expanded)
-#     print("Max Depth Reached:", max_depth)
-#     print("Time Taken:", time_taken, "seconds")
-# else:
-#     print("No solution found.")
+        print("Result Metrics:")
+        print("Traced Path:", [node.initial_state for node in traced_path])
+        print("Solution Path:", solution_path)
+        print("Number of Steps:", path_length)
+        print("Number of Expanded Nodes:", num_expanded)
+        print("Max Depth Reached:", max_depth)
+        print("Time Taken:", time_taken, "seconds")
+    else:
+        print("No solution found.")

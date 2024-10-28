@@ -4,8 +4,6 @@ from PyQt6.QtCore import *
 
 from SolverFactory import SolverFactory as factory
 
-states = ["123405678", "123450678", "123456078", "123456708", "123456780"]
-
 class GameData(QWidget):
     def __init__(self):
         super().__init__()
@@ -150,8 +148,8 @@ class SolveButton(QWidget):
             self.initialState = self.validator.line_edit.text()
             self.alg = self.alg_selection.on_change_selection()
             solver = factory(self.initialState).get_method(self.alg)
-            solver.solve()
-            # self.states = states
+            states, length, expanded, max_depth, el_time = solver.solve()
+            print(states, length, expanded, max_depth, el_time)
 
 # Side Layout
 class SideLayout(QVBoxLayout):

@@ -70,10 +70,10 @@ class IDS(Solver):
                return data
            x=x+1
 
-
-# def run_solver(solver: Solver):
-#     result = solver.solve()
-#     print(result)
-#
-# dfs_solver = IDS("718654230")
-# run_solver(dfs_solver)  # Example initial state
+if __name__ == "__main__":
+    def run_solver(solver: Solver):
+        result = solver.solve()
+        print(result)
+    
+    dfs_solver = IDS("718654230")
+    run_solver(dfs_solver)  # Example initial state

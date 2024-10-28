@@ -26,7 +26,8 @@ class BFS(Solver):
                 end_time = time.time()
                 solution_path = current_node.get_path()
                 traced_path = current_node.trace_path()
-                return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+                # return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+                return traced_path, len(solution_path), num_expanded, max_depth, end_time - start_time
             
             for move, initial_state in current_node.get_neighbors():
                 if initial_state not in visited:
@@ -35,23 +36,23 @@ class BFS(Solver):
 
         return None
             
+if __name__ == "__main__":
+    initial_state = "123456780"
+    goal_state = "123456780"
+    bfs_solver = BFS(initial_state)
+    bfs_solver.set_goal_state(int(goal_state))
+    result = bfs_solver.solve()
 
-# initial_state = "123456780"
-# goal_state = "123456780"
-# bfs_solver = BFS(initial_state)
-# bfs_solver.set_goal_state(int(goal_state))
-# result = bfs_solver.solve()
 
+    if result:
+        traced_path, solution_path, path_length, num_expanded, max_depth, time_taken = result
 
-# if result:
-#     traced_path, solution_path, path_length, num_expanded, max_depth, time_taken = result
-
-#     print("Result Metrics:")
-#     print("Traced Path:", [node.initial_state for node in traced_path])
-#     print("Solution Path:", solution_path)
-#     print("Number of Steps:", path_length)
-#     print("Number of Expanded Nodes:", num_expanded)
-#     print("Max Depth Reached:", max_depth)
-#     print("Time Taken:", time_taken, "seconds")
-# else:
-#     print("No solution found.")
+        print("Result Metrics:")
+        print("Traced Path:", [node.initial_state for node in traced_path])
+        print("Solution Path:", solution_path)
+        print("Number of Steps:", path_length)
+        print("Number of Expanded Nodes:", num_expanded)
+        print("Max Depth Reached:", max_depth)
+        print("Time Taken:", time_taken, "seconds")
+    else:
+        print("No solution found.")
