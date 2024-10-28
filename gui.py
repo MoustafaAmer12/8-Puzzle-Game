@@ -5,8 +5,16 @@ from PyQt6.QtCore import *
 from SolverFactory import SolverFactory as factory
 
 class GameData(QWidget):
-    def __init__(self):
+    def __init__(self, length, max_depth, el_time, expanded):
         super().__init__()
+        self.length = length
+        self.max_depth = max_depth
+        self.el_time = el_time
+        self.expanded = expanded
+        self.time_label = "0"
+        self.expanded_label = "0"
+        self.depth_label = "0"
+        self.cost_label = "0"
         self.initUI()
     
     def initUI(self):
@@ -21,19 +29,23 @@ class GameData(QWidget):
 
         cost = QHBoxLayout()
         cost.addWidget(QLabel("Cost Of Path"), stretch=4)
-        cost.addWidget(QLabel("1231"), stretch=6)
+        self.cost_label = QLabel(f"{self.length}")
+        cost.addWidget(self.cost_label, stretch=6)
 
         nodes_expanded = QHBoxLayout()
         nodes_expanded.addWidget(QLabel("Nodes Expanded"), stretch=4)
-        nodes_expanded.addWidget(QLabel("12"), stretch=6)
+        self.expanded_label = QLabel(f"{self.expanded}")
+        nodes_expanded.addWidget(self.expanded_label, stretch=6)
 
         depth = QHBoxLayout()
         depth.addWidget(QLabel("Search Depth"), stretch=4)
-        depth.addWidget(QLabel("123"), stretch=6)
+        self.depth_label = QLabel(f"{self.max_depth}")
+        depth.addWidget(self.depth_label, stretch=6)
 
         run_time = QHBoxLayout()
         run_time.addWidget(QLabel("Running Time"), stretch=4)
-        run_time.addWidget(QLabel("12311014"), stretch=6)
+        self.time_label = QLabel(f"{self.el_time}")
+        run_time.addWidget(self.time_label, stretch=6)
 
         container.addWidget(game_data_label)
         container.addLayout(path)
@@ -129,6 +141,10 @@ class SolveButton(QWidget):
         self.validator = validator
         self.alg_selection = alg_selection
         self.states = []
+        self.length = 0
+        self.expanded = 0
+        self.max_depth = 0
+        self.el_time = 0
         self.initialState = "012345678"
         self.alg = "DFS"
         self.initUI()
@@ -149,7 +165,7 @@ class SolveButton(QWidget):
             self.alg = self.alg_selection.on_change_selection()
             solver = factory(self.initialState).get_method(self.alg)
             self.states, self.length, self.expanded, self.max_depth, self.el_time = solver.solve()
-
+            
             print(self.states, self.length, self.expanded, self.max_depth, self.el_time)
 
 # Side Layout
@@ -186,15 +202,23 @@ class SideLayout(QVBoxLayout):
         game_controller.addLayout(controller)
         game_controller.setSpacing(10)
 
-        game_data = GameData()
+        self.game_data = GameData(self.length, self.max_depth, self.el_time, self.expanded)
 
         self.addLayout(widget1, stretch=1)
         self.addLayout(widget2, stretch=1)
         self.addLayout(widget3, stretch=1)
         self.addLayout(game_controller, stretch=1)
-        self.addWidget(game_data)
+        self.addWidget(self.game_data)
         self.addWidget(QLabel(), stretch=3)
         self.setContentsMargins(30, 20, 30, 20)
+
+        self.button.submitButton.clicked.connect(self.update_labels)
+
+    def update_labels(self):
+        self.game_data.cost_label.setText(f"{self.length}")
+        self.game_data.depth_label.setText(f"{self.max_depth}")
+        self.game_data.expanded_label.setText(f"{self.expanded}")
+        self.game_data.time_label.setText(f"{self.el_time}")
     
     @property
     def states(self):
@@ -205,9 +229,21 @@ class SideLayout(QVBoxLayout):
         return self.button.initialState
     
     @property
-    def alg(self):
-        return self.button.alg
-        
+    def max_depth(self):
+        return self.button.max_depth
+    
+    @property
+    def el_time(self):
+        return self.button.el_time
+
+    @property
+    def expanded(self):
+        return self.button.expanded    
+    
+    @property
+    def length(self):
+        return self.button.length
+
 # Game Grid
 class GameGrid(QGraphicsView):
     def __init__(self, state="012345678"):
