@@ -1,5 +1,5 @@
 import time
-from Algorithms.Solver import Solver
+from Solver import Solver
 class IDS(Solver):
     def __init__(self, initial_state: str):
         super().__init__(initial_state)

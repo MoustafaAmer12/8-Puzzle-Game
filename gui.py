@@ -149,7 +149,7 @@ class SolveButton(QWidget):
             self.alg = self.alg_selection.on_change_selection()
             solver = factory(self.initialState).get_method(self.alg)
             states, length, expanded, max_depth, el_time = solver.solve()
-            print(states, length, expanded, max_depth, el_time)
+            print(states[0], length, expanded, max_depth, el_time)
 
 # Side Layout
 class SideLayout(QVBoxLayout):

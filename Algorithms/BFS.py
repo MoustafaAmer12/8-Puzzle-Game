@@ -1,6 +1,6 @@
 import time
 from collections import deque
-from Algorithms.Solver import Solver
+from Solver import Solver
 
 class BFS(Solver):
     def __init__(self, initial_state, parent=None, move=None, depth=0):
@@ -26,8 +26,8 @@ class BFS(Solver):
                 end_time = time.time()
                 solution_path = current_node.get_path()
                 traced_path = current_node.trace_path()
-                # return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
-                return traced_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+                return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
+                # return traced_path, len(solution_path), num_expanded, max_depth, end_time - start_time
             
             for move, initial_state in current_node.get_neighbors():
                 if initial_state not in visited:

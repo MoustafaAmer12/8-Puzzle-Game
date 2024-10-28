@@ -1,6 +1,6 @@
 import time
 
-from Algorithms.Solver import Solver
+from Solver import Solver
 class DFS(Solver):
     # initializing parameters of DFS
     def __init__(self, initial_state: str):
