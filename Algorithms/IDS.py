@@ -6,8 +6,14 @@ class IDS(Solver):
         self.expandedNodes=0
         self.startTime=0
         self.endTime=0
+    
+    def output_path(self, states):
+        indices = []
+        for state in states:
+            indices.append(state.find('0'))
+        return indices
+    
     def helper(self, Max):
-
         parent = {}    # parent map to store parent, child relationships
         DepthMap = {}  # Depth map
 
@@ -34,7 +40,10 @@ class IDS(Solver):
                 ans.append(current)
                 ans.reverse()
                 self.endTime=time.time()
-                return self.map(ans),len(ans)-1,self.expandedNodes,Max,round(self.endTime-self.startTime, 4)
+                req = self.map(ans)
+                path = self.map_path(self.output_path(req))
+
+                return req, path, len(ans)-1,self.expandedNodes,Max,round(self.endTime-self.startTime, 4)
 
             if (DepthMap[current] >= Max):
                 continue
@@ -61,6 +70,8 @@ class IDS(Solver):
 
 
     def solve(self):
+        if not self.check_solvable():
+            return None
         self.startTime=time.time()
         x=0
         while(x<100):

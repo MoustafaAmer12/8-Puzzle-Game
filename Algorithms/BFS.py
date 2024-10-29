@@ -11,6 +11,8 @@ class BFS(Solver):
     
 
     def solve(self):
+        if not self.check_solvable():
+            return None
         """Perform BFS to find the solution path and calculate metrics."""
         start_time = time.time()
 
@@ -27,8 +29,9 @@ class BFS(Solver):
                 end_time = time.time()
                 solution_path = current_node.get_path()
                 traced_path = current_node.trace_path()
-                # return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
-                return self.map(traced_path), len(solution_path), num_expanded, max_depth, round(end_time - start_time, 4)
+                solution_path.insert(0, str(traced_path[0]).find('0'))
+                return self.map(traced_path), self.map_path(solution_path), len(solution_path) - 1, num_expanded, max_depth, end_time - start_time
+                # return self.map(traced_path), len(solution_path), num_expanded, max_depth, round(end_time - start_time, 4)
             
             for move, initial_state in current_node.get_neighbors():
                 if initial_state not in visited:
@@ -39,7 +42,7 @@ class BFS(Solver):
             
 if __name__ == "__main__":
     initial_state = "123456780"
-    goal_state = "123456780"
+    goal_state = "012345678"
     bfs_solver = BFS(initial_state)
     bfs_solver.set_goal_state(int(goal_state))
     result = bfs_solver.solve()
@@ -49,7 +52,7 @@ if __name__ == "__main__":
         traced_path, solution_path, path_length, num_expanded, max_depth, time_taken = result
 
         print("Result Metrics:")
-        print("Traced Path:", [node.initial_state for node in traced_path])
+        print("Traced Path:", [node for node in traced_path])
         print("Solution Path:", solution_path)
         print("Number of Steps:", path_length)
         print("Number of Expanded Nodes:", num_expanded)

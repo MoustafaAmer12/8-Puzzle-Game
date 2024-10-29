@@ -10,8 +10,15 @@ class DFS(Solver):
         self.expandedNodes=0   # counter for expanded nodes
         self.DepthMap={}       # depth map storing node , Depth relationships
 
-
+    def output_path(self, states):
+        indices = []
+        for state in states:
+            indices.append(state.find('0'))
+        return indices
+    
     def solve(self):
+        if not self.check_solvable():
+            return None
         print("DFS Solving...")
         startTime=time.time()
         frontier=[]
@@ -38,7 +45,9 @@ class DFS(Solver):
                 ans.append(current)    #append start state
                 ans.reverse()          # reverse path to get it in right order
                 endTime=time.time()
-                return self.map(ans), len(ans)-1, self.expandedNodes, self.maxDepth, round(endTime-startTime, 4)   # returning data
+                req = self.map(ans)
+                path = self.map_path(self.output_path(req))
+                return req, path, len(ans)-1, self.expandedNodes, self.maxDepth, round(endTime-startTime, 4)   # returning data
 
 
 

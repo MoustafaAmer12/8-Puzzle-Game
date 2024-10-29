@@ -56,7 +56,8 @@ class AStar(Solver):
         return self.cost > other.cost
 
     def solve(self):
-
+        if not self.check_solvable():
+            return None
 
         print("Solving using A*...")
         start_time = time.time()
@@ -79,8 +80,9 @@ class AStar(Solver):
                 end_time = time.time()
                 solution_path = current_node.get_path()
                 traced_path = current_node.trace_path()
-                # return traced_path, solution_path, len(solution_path), num_expanded, max_depth, end_time - start_time
-                return self.map(traced_path), len(solution_path), num_expanded, max_depth, round(end_time - start_time, 4)
+                solution_path.insert(0, str(traced_path[0]).find('0'))
+                return self.map(traced_path), self.map_path(solution_path) , len(solution_path) - 1, num_expanded, max_depth, end_time - start_time
+                # return self.map(traced_path), len(solution_path), num_expanded, max_depth, round(end_time - start_time, 4)
 
             
             for move, initial_state in current_node.get_neighbors():

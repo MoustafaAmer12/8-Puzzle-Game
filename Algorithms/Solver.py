@@ -62,6 +62,22 @@ class Solver:
 
         return children
 
+    def map_path(self, path):
+        new_paths = []
+        for i in range(len(path)):
+            j = i + 1
+            if j < len(path):
+                dir = path[i] - path[j]
+                if dir == -1:
+                    new_paths.append("Right")
+                elif dir == 1:
+                    new_paths.append("Left")
+                elif dir == -3:
+                    new_paths.append("Down")
+                else:
+                    new_paths.append("Up")
+        return new_paths
+
     def map(self, states):
         new_states = []
         for state in states:
@@ -117,12 +133,3 @@ class Solver:
             path.append(node.initial_state)
             node = node.parent
         return path[::-1] 
-
-
-
-    # Check If Unified or Not
-    def pipeline(self):
-        if not self.check_solvable():
-            return -1
-        self.solve()
-        # self.map()

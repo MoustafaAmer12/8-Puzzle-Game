@@ -5,16 +5,18 @@ from PyQt6.QtCore import *
 from SolverFactory import SolverFactory as factory
 
 class GameData(QWidget):
-    def __init__(self, length, max_depth, el_time, expanded):
+    def __init__(self, length, max_depth, el_time, expanded, path):
         super().__init__()
         self.length = length
         self.max_depth = max_depth
         self.el_time = el_time
         self.expanded = expanded
+        self.path = path
         self.time_label = "0"
         self.expanded_label = "0"
         self.depth_label = "0"
         self.cost_label = "0"
+        self.path_label = ""
         self.initUI()
     
     def initUI(self):
@@ -23,9 +25,11 @@ class GameData(QWidget):
         game_data_label = QLabel("Solution Data")
         game_data_label.setContentsMargins(0,30,0,20)
 
-        path = QHBoxLayout()
-        path.addWidget(QLabel("Path To Goal"), stretch=4)
-        path.addWidget(QLabel("Up, Down, Left ..."), stretch=6)
+        path = QVBoxLayout()
+        path.addWidget(QLabel("Path To Goal"), stretch=1)
+        self.path_label = QLabel("Up, Down, Left ...")
+        self.path_label.setWordWrap(True)
+        path.addWidget(self.path_label, stretch=9)
 
         cost = QHBoxLayout()
         cost.addWidget(QLabel("Cost Of Path"), stretch=4)
@@ -68,12 +72,12 @@ class ValLineEdit(QWidget):
 
         self.line_edit = QLineEdit(self)
         self.line_edit.setPlaceholderText("012345678")
-
         self.error_label = QLabel(self)
         self.error_label.setStyleSheet("color: red;")
 
         layout.addWidget(self.line_edit)
         layout.addWidget(self.error_label)
+        self.line_edit.textChanged.connect(lambda: self.error_label.setText(""))
 
         self.setLayout(layout)
 
@@ -115,32 +119,13 @@ class AlgSelection(QWidget):
         return self.algo_selection.currentText()
 
 
-
-# Grid Control
-class GridControl(QHBoxLayout):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-
-    def initUI(self):
-        slider = QSlider(Qt.Orientation.Horizontal)
-        slider.setValue(31)
-        slider.setMaximum(31)
-        prevButton = QToolButton()
-        nextButton = QToolButton()
-
-        self.addWidget(slider, stretch=6)
-        self.addWidget(prevButton, stretch=2)
-        self.addWidget(nextButton, stretch=2)
-        self.setContentsMargins(30, 0, 30, 20)
-
-
 class SolveButton(QWidget):
     def __init__(self, validator: ValLineEdit, alg_selection: AlgSelection):
         super().__init__()
         self.validator = validator
         self.alg_selection = alg_selection
         self.states = []
+        self.path = []
         self.length = 0
         self.expanded = 0
         self.max_depth = 0
@@ -161,19 +146,23 @@ class SolveButton(QWidget):
 
     def handle_submission(self):
         if self.validator.validate_input():
+            self.validator.error_label.setText("")
             self.initialState = self.validator.line_edit.text()
             self.alg = self.alg_selection.on_change_selection()
             solver = factory(self.initialState).get_method(self.alg)
             soln = solver.solve()
             if soln != None:
-                self.states, self.length, self.expanded, self.max_depth, self.el_time = solver.solve()
-                print(self.states, self.length, self.expanded, self.max_depth, self.el_time)
+                self.states, self.path, self.length, self.expanded, self.max_depth, self.el_time = solver.solve()
+                # print(self.states, self.path, self.length, self.expanded, self.max_depth, self.el_time)
             else:
                 self.states = None
+                self.path = None
                 self.length = None
                 self.expanded = None
                 self.max_depth = None
                 self.el_time = None
+        else:
+            pass
 
 # Side Layout
 class SideLayout(QVBoxLayout):
@@ -203,18 +192,11 @@ class SideLayout(QVBoxLayout):
         widget3.addWidget(self.button, stretch=2)
         widget3.setContentsMargins(0,0,20,0)
 
-        controller = GridControl()
-        game_controller = QVBoxLayout()
-        game_controller.addWidget(QLabel("Inspect Solution"))
-        game_controller.addLayout(controller)
-        game_controller.setSpacing(10)
-
-        self.game_data = GameData(self.length, self.max_depth, self.el_time, self.expanded)
+        self.game_data = GameData(self.length, self.max_depth, self.el_time, self.expanded, self.path)
 
         self.addLayout(widget1, stretch=1)
         self.addLayout(widget2, stretch=1)
         self.addLayout(widget3, stretch=1)
-        self.addLayout(game_controller, stretch=1)
         self.addWidget(self.game_data)
         self.addWidget(QLabel(), stretch=3)
         self.setContentsMargins(30, 20, 30, 20)
@@ -224,11 +206,12 @@ class SideLayout(QVBoxLayout):
     def update_labels(self):
         if self.states is None:
             self.input.error_label.setText("UnSolvable")
-        else:
+        elif self.input.validate_input():
             self.game_data.cost_label.setText(f"{self.length}")
             self.game_data.depth_label.setText(f"{self.max_depth}")
             self.game_data.expanded_label.setText(f"{self.expanded}")
             self.game_data.time_label.setText(f"{self.el_time}")
+            self.game_data.path_label.setText(f"{', '.join(self.path)}")
             self.button.submitButton.setDisabled(True)
             self.alg_selection.setDisabled(True)
             self.input.setDisabled(True)
@@ -236,6 +219,10 @@ class SideLayout(QVBoxLayout):
     @property
     def states(self):
         return self.button.states
+    
+    @property
+    def path(self):
+        return self.button.path
     
     @property
     def initalState(self):
@@ -390,9 +377,8 @@ class AppLayout(QHBoxLayout):
         )
     
     def handleSubmission(self):
-        if self.side_layout.states is not None: 
+        if self.side_layout.states is not None and self.side_layout.input.validate_input(): 
             self.initialState = self.side_layout.initalState
-            # self.alg = self.side_layout.alg
             self.game_layout.game_grid.refreshGrid(self.initialState),
             QTimer.singleShot(1000, lambda: 
                 self.game_layout.playTransitions(self.side_layout.states, self.side_layout)
