@@ -14,6 +14,8 @@ class BFS(Solver):
         if not self.check_solvable():
             return None
         """Perform BFS to find the solution path and calculate metrics."""
+        
+        print("Solving using BFS ...")
         start_time = time.time()
 
         queue = deque([BFS(int(self.initial_state))])

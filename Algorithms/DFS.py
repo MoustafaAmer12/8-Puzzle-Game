@@ -19,7 +19,8 @@ class DFS(Solver):
     def solve(self):
         if not self.check_solvable():
             return None
-        print("DFS Solving...")
+        
+        print("Solving using DFS ...")
         startTime=time.time()
         frontier=[]
         explored=set()

@@ -72,6 +72,8 @@ class IDS(Solver):
     def solve(self):
         if not self.check_solvable():
             return None
+        
+        print("Solving using IDS ...")
         self.startTime=time.time()
         x=0
         while(x<100):

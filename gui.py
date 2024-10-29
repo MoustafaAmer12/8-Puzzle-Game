@@ -153,7 +153,7 @@ class SolveButton(QWidget):
             soln = solver.solve()
             if soln != None:
                 self.states, self.path, self.length, self.expanded, self.max_depth, self.el_time = solver.solve()
-                # print(self.states, self.path, self.length, self.expanded, self.max_depth, self.el_time)
+                print(self.states, self.length, self.expanded, self.max_depth, self.el_time)
             else:
                 self.states = None
                 self.path = None
@@ -341,8 +341,8 @@ class GameLayout(QVBoxLayout):
     
     def playTransitions(self, states, side_layout: SideLayout):
         for i, state in enumerate(states):
-            QTimer.singleShot(i * 1000, lambda st=state: self.game_grid.updateState(st))
-        total_duration = len(states) * 1000 
+            QTimer.singleShot(i * 1200, lambda st=state: self.game_grid.updateState(st))
+        total_duration = len(states) * 1200 
         QTimer.singleShot(total_duration, lambda: (
             side_layout.button.submitButton.setDisabled(False),
             side_layout.input.setDisabled(False),
