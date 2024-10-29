@@ -10,8 +10,9 @@ class DFS(Solver):
         self.expandedNodes=0   # counter for expanded nodes
         self.DepthMap={}       # depth map storing node , Depth relationships
 
-    def solve(self):
 
+    def solve(self):
+        print("DFS Solving...")
         startTime=time.time()
         frontier=[]
         explored=set()

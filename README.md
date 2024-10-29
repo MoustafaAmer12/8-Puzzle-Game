@@ -34,5 +34,5 @@
 
 5. Run the main.py file using
    ```
-   python3 main.py
+   python3 -m main
    ```
