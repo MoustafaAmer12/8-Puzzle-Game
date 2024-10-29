@@ -153,7 +153,7 @@ class SolveButton(QWidget):
             soln = solver.solve()
             if soln != None:
                 self.states, self.path, self.length, self.expanded, self.max_depth, self.el_time = solver.solve()
-                print(self.states, self.length, self.expanded, self.max_depth, self.el_time)
+                print(f"State: {self.states}\nPath: {self.path}\nPath Cost: {self.length}\nExpanded Nodes{self.expanded}\nMax Depth: {self.max_depth}\nElapsed Time: {self.el_time}")
             else:
                 self.states = None
                 self.path = None
